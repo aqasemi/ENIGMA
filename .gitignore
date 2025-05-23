@@ -1,0 +1,4 @@
+data/
+cache/
+slurm_logs/
+__pycache__
