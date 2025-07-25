@@ -110,6 +110,12 @@ class EEGDataset(Dataset):
         stim_df = stim_df.reset_index(drop=True)
         self.stim_indices = stim_df.index.tolist()
         print(f"Finished loading {len(stim_df)} metadata rows")
+
+        # replace image_path stem with the actual path to the images
+        images_path = "data/alljoined/stimuli/images"
+        stim_df["image_path"] = stim_df["image_path"].apply(
+            lambda x: os.path.join(images_path, os.path.basename(x))
+        )
         return stim_df
 
     def get_eeg_data(self):
@@ -145,7 +151,7 @@ class EEGDataset(Dataset):
         If this dataset has been run before, the feature will be saved
         in a designated location.
         """
-        features = torch.load(self.features_file)
+        features = torch.load(self.features_file, weights_only=False)
 
         return features
 
@@ -200,6 +206,7 @@ class EEGDataset(Dataset):
     def __getitem__(self, index) -> DataLoaderItem:
         metadata = self.stim_df.iloc[index]
         eeg = self.eeg_data[index]
+
         img_vector = self.features["image"][metadata.image_path]
         txt_vector = self.features["text"][metadata.category_name]
         img_vector_norm = img_vector / img_vector.norm(dim=-1, keepdim=True)

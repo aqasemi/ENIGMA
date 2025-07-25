@@ -41,7 +41,8 @@ def evaluate_recons(
     for subj in subjects:
         # Load the recons
         final_recons = torch.load(
-            os.path.join(output_path, f"final_recons_{subj}.pt")
+            os.path.join(output_path, f"final_recons_{subj}.pt"),
+            weights_only=False
         )
         test_dataset = EEGDataset(config_name, subjects=[subj], split="test")
 

@@ -160,7 +160,7 @@ def main():
     parser.add_argument(
         "--config_name",
         type=str,
-        default="things_eeg2",
+        default="Alljoined-1.6M",
         help=(
             "Name of the config to load for the dataset (looks in configs"
             " directory)."
@@ -200,7 +200,7 @@ def main():
     parser.add_argument(
         "--max_lr",
         type=float,
-        default=3e-4,
+        default=5e-4, # changed from 3e-4 to 5e-4
         help="Maximum learning rate used in the schedule for model training.",
     )
     parser.add_argument(

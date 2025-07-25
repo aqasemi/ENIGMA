@@ -77,7 +77,7 @@ def recon_inference(
         f" {model_path}/last.pth"
         " if using best.pth, did you train with a validation set?"
     )
-    model_weights = torch.load(f"{model_path}/last.pth", map_location=device)
+    model_weights = torch.load(f"{model_path}/last.pth", map_location=device, weights_only=False)
     # Load the checkpoint
     model.load_state_dict(model_weights, strict=False)
     model = model.to(device)

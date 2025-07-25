@@ -1,18 +1,20 @@
-subj_ids=(8)
-model_name="ENIGMA_sub-(${subj_ids[*]// /,})"
-config_name="things_eeg2" # Which dataset config file to load
+#!/bin/bash
+subj_ids=(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)
+model_name="ENIGMA-all-11"
+config_name="Alljoined-1.6M"
 
-python train.py \
+uv run train.py \
     --model_name "$model_name" \
     --subj_ids "${subj_ids[@]}" \
-    --config_name "$config_name" 
+    --config_name "$config_name" \
+    --batch_size 1024
 
-python recon_inference.py \
+uv run recon_inference.py \
     --model_name "$model_name" \
     --subj_ids "${subj_ids[@]}" \
     --config_name "$config_name"
     
-python evaluate_recons.py \
+uv run evaluate_recons.py \
     --model_name "$model_name" \
     --subj_ids "${subj_ids[@]}" \
     --config_name "$config_name"
