@@ -1,9 +1,9 @@
 {
-    "metadata_path" : "data/preprocessed_data/Alljoined-1.6M/{subject}/experiment_metadata.parquet",
-    "eeg_trials_train": "data/preprocessed_data/Alljoined-1.6M/{subject}/preprocessed_eeg_training_flat.npy",
-    "eeg_trials_test": "data/preprocessed_data/Alljoined-1.6M/{subject}/preprocessed_eeg_test_flat.npy",
-    "features_train": "data/preprocessed_data/Alljoined-1.6M/features/features_dict_train.pt",
-    "features_test": "data/preprocessed_data/Alljoined-1.6M/features/features_dict_test.pt",
+    "metadata_path" : "data/alljoined/preprocessed_eeg/{subject}/experiment_metadata_categories.parquet",
+    "eeg_trials_train": "data/alljoined/preprocessed_eeg/{subject}/preprocessed_eeg_training_flat.npy",
+    "eeg_trials_test": "data/alljoined/preprocessed_eeg/{subject}/preprocessed_eeg_test_flat.npy",
+    "features_train": "data/alljoined/preprocessed_eeg/features/features_dict_train.pt",
+    "features_test": "data/alljoined/preprocessed_eeg/features/features_dict_test.pt",
     "channels": ["Cz", "FCz", "AFz", "Fp1", "F5", "F1", "CP5", "CP3", "CP1", "P1", "P3", "P5", "P7", "PO7", "PO3", "O1", "Pz", "POz", "Oz", "O2", "PO4", "PO8", "P8", "P6", "P4", "P2", "CP2", "CP4", "CP6", "F2", "F6", "Fp2"],
     "subjects": ["sub-01", "sub-02", "sub-03", "sub-04", "sub-05", "sub-06", "sub-07", "sub-08", "sub-09", "sub-10", "sub-11", "sub-12", "sub-13", "sub-14", "sub-15", "sub-16", "sub-17", "sub-18", "sub-19", "sub-20"]
 }
