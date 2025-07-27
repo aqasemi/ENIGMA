@@ -10,6 +10,8 @@ import subprocess
 import random
 import torch.nn as nn
 from typing import Tuple
+import torch.distributed as dist
+
 
 try:
     import horovod.torch as hvd

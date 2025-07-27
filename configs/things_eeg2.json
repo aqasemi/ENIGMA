@@ -1,9 +1,9 @@
 {
-    "metadata_path" : "data/preprocessed_data/things_eeg2/{subject}/experiment_metadata.parquet",
-    "eeg_trials_train": "data/preprocessed_data/things_eeg2/{subject}/preprocessed_eeg_training_flat.npy",
-    "eeg_trials_test": "data/preprocessed_data/things_eeg2/{subject}/preprocessed_eeg_test_flat.npy",
-    "features_train": "data/preprocessed_data/things_eeg2/features/features_dict_train.pt",
-    "features_test": "data/preprocessed_data/things_eeg2/features/features_dict_test.pt",
+    "metadata_path" : "/ibex/user/qasemiaa/enigma/data/eeg_things2/Preprocessed_data_250Hz/{subject}/experiment_metadata.parquet",
+    "eeg_trials_train": "/ibex/user/qasemiaa/enigma/data/eeg_things2/Preprocessed_data_250Hz/{subject}/preprocessed_eeg_training.npy",
+    "eeg_trials_test": "/ibex/user/qasemiaa/enigma/data/eeg_things2/Preprocessed_data_250Hz/{subject}/preprocessed_eeg_test.npy",
+    "features_train": "/ibex/user/qasemiaa/enigma/data/eeg_things2/ViT-H-14_features_train.pt",
+    "features_test": "/ibex/user/qasemiaa/enigma/data/eeg_things2/ViT-H-14_features_test.pt",
     "channels": ["Fp1", "Fp2", "AF7", "AF3", "AFz", "AF4", "AF8", "F7", "F5", "F3", "F1", "F2", "F4", "F6", "F8", "FT9", "FT7", "FC5", "FC3", "FC1", "FCz", "FC2", "FC4", "FC6", "FT8", "FT10", "T7", "C5", "C3", "C1", "Cz", "C2", "C4", "C6", "T8", "TP9", "TP7", "CP5", "CP3", "CP1", "CPz", "CP2", "CP4", "CP6", "TP8", "TP10", "P7", "P5", "P3", "P1", "Pz", "P2", "P4", "P6", "P8", "PO7", "PO3", "POz", "PO4", "PO8", "O1", "Oz", "O2"],
     "subjects": ["sub-01", "sub-02", "sub-05", "sub-04", "sub-03", "sub-06", "sub-07", "sub-08", "sub-09", "sub-10"]
 }

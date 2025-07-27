@@ -4,3 +4,6 @@ slurm_logs/
 __pycache__
 train_logs/
 output/
+dcgm/
+.ipynb_checkpoints/
+.venv/

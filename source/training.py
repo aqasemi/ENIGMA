@@ -88,10 +88,12 @@ def train_epoch(
     retrieval_img_loss_scale,
     retrieval_txt_loss_scale,
     retrieval_only,
+    rank,
+    world_size,
 ):
     """Train loop for one epoch."""
     mse = nn.MSELoss()
-    InfoNCE = ClipLoss()
+    InfoNCE = ClipLoss(rank=rank, world_size=world_size)
 
     for batch in dataloader:
         loss = 0
@@ -102,7 +104,8 @@ def train_epoch(
         txt_features_norm = batch.txt_vector_norm.to(device, non_blocking=True)
         subjects = batch.subject
         if retrieval_only:
-            logit_scale = model.logit_scale
+            # Accessing a parameter on a DDP-wrapped model requires .module
+            logit_scale = model.module.logit_scale
         else:
             logit_scale = 1
 
@@ -140,10 +143,14 @@ def evaluate_epoch(
     retrieval_img_loss_scale,
     retrieval_txt_loss_scale,
     retrieval_only,
+    rank,
+    world_size,
 ):
     mse = nn.MSELoss()
-    InfoNCE = ClipLoss()
+    InfoNCE = ClipLoss(rank=rank, world_size=world_size)
     loss_total = 0
+    num_batches = 0
+    
     for batch in dataloader:
         loss = 0
 
@@ -154,7 +161,7 @@ def evaluate_epoch(
         txt_features_norm = batch.txt_vector_norm.to(device, non_blocking=True)
         subjects = batch.subject
         if retrieval_only:
-            logit_scale = model.logit_scale
+            logit_scale = model.module.logit_scale
         else:
             logit_scale = 1
 
@@ -176,13 +183,23 @@ def evaluate_epoch(
         loss += contrastive_loss_img
         loss += contrastive_loss_txt
         loss_total += loss.item()
-    print(f"Loss: {loss.item()}")
+        num_batches += 1
+
+    # Aggregate loss across all processes
+    avg_loss = loss_total / num_batches if num_batches > 0 else 0.0
+    loss_tensor = torch.tensor(avg_loss, device=device)
+    dist.all_reduce(loss_tensor, op=dist.ReduceOp.AVG)
+
+    if rank == 0:
+        print(f"Validation Loss: {loss_tensor.item()}")
 
 
 def get_dataloaders(
     config_name,
     subjects,
     batch_size,
+    rank=0,
+    world_size=1,
 ):
     # Train dataset
     train_dataset = EEGDataset(
@@ -190,12 +207,22 @@ def get_dataloaders(
         subjects=subjects,
         split="train",
     )
+    
+    train_sampler = DistributedSampler(
+        train_dataset,
+        num_replicas=world_size,
+        rank=rank,
+        shuffle=True
+    )
+    
     train_dataloader = DataLoader(
         train_dataset,
         batch_size=batch_size,
-        num_workers=1,
+        sampler=train_sampler,
+        shuffle=False, # Sampler handles shuffling
+        num_workers=2, # Increased for better performance
         drop_last=True,
-        pin_memory=False,
+        pin_memory=True, # Set to True for performance
         persistent_workers=True,
     )
     # Test dataset
@@ -203,16 +230,25 @@ def get_dataloaders(
         config_name=config_name, subjects=subjects, split="test"
     )
 
+    test_sampler = DistributedSampler(
+        test_dataset,
+        num_replicas=world_size,
+        rank=rank,
+        shuffle=False
+    )
+
     test_dataloader = DataLoader(
         test_dataset,
         batch_size=200,
-        num_workers=1,
+        sampler=test_sampler,
+        shuffle=False,
+        num_workers=2, # Increased for better performance
         drop_last=False,
-        pin_memory=False,
+        pin_memory=True, # Set to True for performance
         persistent_workers=True,
     )
 
-    return train_dataloader, test_dataloader
+    return train_dataloader, test_dataloader, train_sampler
 
 
 def prepare_optimizer(

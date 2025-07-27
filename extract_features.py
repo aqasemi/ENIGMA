@@ -112,7 +112,7 @@ def process_partition(df, clip_encoder):
     unique_category_names = df["category_name"].unique().tolist()
 
     # replace the stem in image paths by IMAGES_PATH
-    images_path = "data/alljoined/stimuli/images"
+    images_path = "/ibex/user/qasemiaa/enigma/data/alljoined/stimuli/images"
     unique_image_paths = [os.path.join(images_path, os.path.basename(path)) for path in unique_image_paths]
     
     print(f"Found {len(unique_image_paths)} unique images and {len(unique_category_names)} unique text labels.")
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--config_name",
         type=str,
-        default="things_eeg2",
+        default="Alljoined-1.6M",
         help="Name of the dataset config file to use (e.g., 'things_eeg2', 'Alljoined-1.6M')."
     )
     parser.add_argument(

@@ -74,9 +74,9 @@ class EEGDataset(Dataset):
             self.df_partition = "stim_train"
 
         # Load EEG data and features
-        self.stim_df = self.get_metadata()
         self.features = self.get_features()
         self.eeg_data = self.get_eeg_data()
+        self.stim_df = self.get_metadata()
 
         if self.df_partition == "stim_test":
             self.average_eeg()
@@ -112,7 +112,7 @@ class EEGDataset(Dataset):
         print(f"Finished loading {len(stim_df)} metadata rows")
 
         # replace image_path stem with the actual path to the images
-        images_path = "data/alljoined/stimuli/images"
+        images_path = "/ibex/user/qasemiaa/enigma/data/alljoined/stimuli/images"
         stim_df["image_path"] = stim_df["image_path"].apply(
             lambda x: os.path.join(images_path, os.path.basename(x))
         )
